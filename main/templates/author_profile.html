@@ -1,0 +1,348 @@
+{% extends 'base.html' %} {% load static %} {% block extra_css %}
+<style>
+  /* ══ PROFILE PAGE ══════════════════════════════════════ */
+  .profile-page {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 16px;
+    color: white;
+  }
+
+  /* ── PROFILE CARD ── */
+  .profile-card {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+  }
+  .profile-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  .profile-info h2 {
+    margin: 0 0 6px;
+    font-size: 26px;
+  }
+  .profile-info p {
+    margin: 5px 0;
+    opacity: 0.82;
+    font-size: 0.9rem;
+  }
+  .profile-info a {
+    color: #67dfcb;
+  }
+  .profile-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 14px;
+  }
+  .meta-item {
+    text-align: center;
+  }
+  .meta-item span {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: #7ee8fa;
+  }
+  .meta-item small {
+    font-size: 0.75rem;
+    opacity: 0.65;
+  }
+
+  .edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 16px;
+    padding: 9px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+    box-shadow: 0 0 14px rgba(0, 170, 255, 0.25);
+    transition: 0.3s;
+  }
+  .edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 22px rgba(0, 170, 255, 0.45);
+  }
+
+  /* ── QUICK CREATE ── */
+  .quick-create {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .quick-create h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+  }
+  .quick-create textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+  }
+  .quick-create textarea:focus {
+    border-color: rgba(0, 200, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 170, 255, 0.15);
+  }
+  .quick-create-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    padding: 9px 16px;
+    border-radius: 14px;
+    border: 1px dashed rgba(126, 232, 250, 0.3);
+    background: rgba(126, 232, 250, 0.06);
+    color: #7ee8fa;
+    font-size: 0.84rem;
+    transition: 0.25s;
+  }
+  .file-label:hover {
+    background: rgba(126, 232, 250, 0.12);
+  }
+  .file-label input {
+    display: none;
+  }
+  #file-count {
+    font-size: 0.78rem;
+    opacity: 0.6;
+  }
+  .publish-btn {
+    margin-left: auto;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    font-size: 0.88rem;
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+    box-shadow: 0 0 14px rgba(0, 170, 255, 0.22);
+    transition: 0.3s;
+  }
+  .publish-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 22px rgba(0, 170, 255, 0.4);
+  }
+
+  /* ── POSTS GRID ── */
+  .section-title {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+  .posts-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .mini-post {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .mini-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  }
+  .mini-post p {
+    opacity: 0.8;
+    font-size: 0.88rem;
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+  .mini-post small {
+    opacity: 0.5;
+    font-size: 0.78rem;
+  }
+
+  /* mini media grid */
+  .mini-media {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .mini-media img,
+  .mini-media video {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    max-height: 200px;
+  }
+  .no-media-label {
+    opacity: 0.45;
+    font-size: 0.8rem;
+  }
+  .empty-label {
+    opacity: 0.65;
+    font-style: italic;
+  }
+
+  @media (max-width: 700px) {
+    .profile-card {
+      flex-direction: column;
+    }
+    .profile-avatar {
+      align-self: center;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="profile-page">
+  <!-- ── PROFILE CARD ── -->
+  <div class="profile-card">
+    <div
+      class="profile-avatar"
+      style="background:{{ profile.avatar_initial_color|default:'#ff4d6d' }};"
+    >
+      {{ author.username|slice:":1"|upper }}
+    </div>
+
+    <div class="profile-info">
+      <h2>{{ author.username }}</h2>
+      {% if profile.bio %}
+      <p>{{ profile.bio }}</p>
+      {% endif %} {% if profile.website %}
+      <p>
+        🌐
+        <a href="{{ profile.website }}" target="_blank"
+          >{{ profile.website }}</a
+        >
+      </p>
+      {% endif %} {% if profile.twitter %}
+      <p>𝕏 @{{ profile.twitter }}</p>
+      {% endif %}
+
+      <div class="profile-meta">
+        <div class="meta-item">
+          <span>{{ author_posts.count }}</span>
+          <small>Post{{ author_posts.count|pluralize }}</small>
+        </div>
+        <div class="meta-item">
+          <span>{{ author.date_joined|date:"M Y" }}</span>
+          <small>Joined</small>
+        </div>
+      </div>
+
+      {% if request.user == author %}
+      <a href="{% url 'edit_profile' %}" class="edit-btn">
+        <i class="fa-solid fa-pen"></i> Edit Profile
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ── QUICK CREATE (own profile only) ── -->
+  {% if request.user == author %}
+  <div class="quick-create">
+    <h3>✨ Create New Post</h3>
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action="{% url 'create_post' %}"
+    >
+      {% csrf_token %}
+      <textarea
+        name="content"
+        rows="3"
+        placeholder="Share your innovation with the community…"
+        required
+      ></textarea>
+      <div class="quick-create-row">
+        <label class="file-label">
+          <i class="fa-solid fa-paperclip"></i> Attach media
+          <input
+            type="file"
+            name="media_files"
+            multiple
+            accept="image/*,video/mp4"
+            onchange="updateCount(this)"
+          />
+        </label>
+        <span id="file-count"></span>
+        <button type="submit" class="publish-btn">
+          <i class="fa-solid fa-paper-plane"></i> Publish
+        </button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- ── POSTS ── -->
+  <!-- ── POSTS ── -->
+  <h3 class="section-title">Posts by {{ author.username }}</h3>
+  <div class="posts-grid">
+    {% for post in author_posts %}
+    <div class="mini-post">
+      <p>{{ post.content }}</p>
+
+      {% if post.media_files.all %}
+      <div class="mini-media">
+        {% for media in post.media_files.all %} {% if media.is_video %}
+        <video controls>
+          <source src="{{ media.file.url }}" type="video/mp4" />
+        </video>
+        {% endif %} {% if media.is_image %}
+        <img src="{{ media.file.url }}" alt="media" />
+        {% endif %} {% endfor %}
+      </div>
+      {% endif %}
+
+      <small>{{ post.created_at|date:"d M Y · H:i" }}</small>
+    </div>
+    {% empty %}
+    <p class="empty-label">No posts yet — create the first one above!</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  function updateCount(input) {
+    const n = input.files.length;
+    const el = document.getElementById("file-count");
+    el.textContent =
+      n > 0 ? n + " file" + (n > 1 ? "s" : "") + " selected" : "";
+  }
+</script>
+{% endblock %}

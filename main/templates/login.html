@@ -1,0 +1,489 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="login-page">
+  <!-- LEFT SHOWCASE -->
+  <div class="login-showcase">
+    <div class="showcase-overlay"></div>
+
+    <div class="showcase-content">
+      <span class="mini-tag"> Secure Digital Access </span>
+
+      <h1>
+        Welcome Back to
+        <span>Century Innovative</span>
+      </h1>
+
+      <p>
+        Continue your futuristic journey through innovation, ideas, technology,
+        and creative collaboration inside the platform.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-item">Access Your Dashboard</div>
+
+        <div class="feature-item">Continue Your Blog Journey</div>
+
+        <div class="feature-item">Connect With Innovators</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="login-container">
+    <div class="login-card">
+      <div class="card-glow"></div>
+
+      <h2>Login</h2>
+
+      <p class="subtitle">Sign in to continue</p>
+
+      <form method="POST" class="login-form">
+        {% csrf_token %}
+
+        <!-- USERNAME -->
+        <div class="input-group">
+          <label> Username </label>
+
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            required
+          />
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="input-group">
+          <label> Password </label>
+
+          <div class="password-box">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter password"
+              required
+            />
+
+            <span onclick="togglePassword()" class="toggle-pass">
+              <i class="fa-solid fa-eye"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- ERROR -->
+        {% if form.errors %}
+        <div class="error-box">Invalid username or password</div>
+        {% endif %}
+
+        <!-- BUTTON -->
+        <button type="submit" class="login-btn">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Login
+        </button>
+      </form>
+
+      <!-- FOOTER -->
+      <div class="auth-footer">
+        Don’t have an account?
+
+        <a href="{% url 'signup' %}"> Create Account </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* PAGE */
+
+  .login-page {
+    min-height: 85vh;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+
+    gap: 30px;
+
+    align-items: center;
+  }
+
+  /* SHOWCASE */
+
+  .login-showcase {
+    position: relative;
+
+    height: 700px;
+
+    border-radius: 35px;
+
+    overflow: hidden;
+
+    background-image: url("{% static 'images/techbg.jpg' %}");
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* OVERLAY */
+
+  .showcase-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+      135deg,
+      rgba(0, 15, 40, 0.85),
+      rgba(0, 119, 255, 0.35)
+    );
+  }
+
+  /* CONTENT */
+
+  .showcase-content {
+    position: relative;
+    z-index: 2;
+
+    height: 100%;
+
+    padding: 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: white;
+  }
+
+  /* TAG */
+
+  .mini-tag {
+    width: max-content;
+
+    padding: 10px 18px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    margin-bottom: 25px;
+  }
+
+  /* TITLE */
+
+  .showcase-content h1 {
+    font-size: 65px;
+
+    line-height: 1.1;
+
+    margin-bottom: 25px;
+  }
+
+  /* SPAN */
+
+  .showcase-content h1 span {
+    background: linear-gradient(45deg, #7ee8fa, #00c6ff, #4facfe);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* PARAGRAPH */
+
+  .showcase-content p {
+    color: #dbe7ff;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+    margin-bottom: 35px;
+  }
+
+  /* FEATURES */
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* FEATURE ITEM */
+
+  .feature-item {
+    width: max-content;
+
+    padding: 14px 20px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* FORM SIDE */
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* CARD */
+
+  .login-card {
+    position: relative;
+
+    width: 100%;
+    max-width: 460px;
+
+    padding: 45px;
+
+    border-radius: 30px;
+
+    overflow: hidden;
+
+    background: rgba(10, 18, 35, 0.55);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* GLOW */
+
+  .card-glow {
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    top: -100px;
+    right: -100px;
+
+    background: radial-gradient(
+      circle,
+      rgba(0, 170, 255, 0.22),
+      transparent 70%
+    );
+  }
+
+  /* TITLE */
+
+  .login-card h2 {
+    font-size: 38px;
+
+    color: white;
+
+    margin-bottom: 10px;
+  }
+
+  /* SUBTITLE */
+
+  .subtitle {
+    color: #c8d9ff;
+
+    margin-bottom: 35px;
+  }
+
+  /* FORM */
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* INPUT GROUP */
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* LABEL */
+
+  .input-group label {
+    color: #dbe7ff;
+
+    font-size: 14px;
+  }
+
+  /* INPUT */
+
+  .input-group input {
+    width: 100%;
+
+    padding: 15px 18px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: 0.3s;
+  }
+
+  /* PLACEHOLDER */
+
+  .input-group input::placeholder {
+    color: #b8c9ec;
+  }
+
+  /* FOCUS */
+
+  .input-group input:focus {
+    border: 1px solid rgba(0, 200, 255, 0.5);
+
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
+  }
+
+  /* PASSWORD */
+
+  .password-box {
+    position: relative;
+  }
+
+  /* TOGGLE */
+
+  .toggle-pass {
+    position: absolute;
+
+    right: 18px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #bcd1ff;
+
+    cursor: pointer;
+  }
+
+  /* BUTTON */
+
+  .login-btn {
+    margin-top: 10px;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+
+    transition: 0.35s;
+
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.25);
+  }
+
+  /* HOVER */
+
+  .login-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.45);
+  }
+
+  /* FOOTER */
+
+  .auth-footer {
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #dbe7ff;
+  }
+
+  /* LINK */
+
+  .auth-footer a {
+    color: #7ee8fa;
+
+    text-decoration: none;
+
+    font-weight: 600;
+  }
+
+  /* ERROR */
+
+  .error-box {
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background: rgba(255, 0, 90, 0.15);
+
+    border: 1px solid rgba(255, 0, 90, 0.2);
+
+    color: #ffdce4;
+  }
+
+  /* RESPONSIVE */
+
+  @media (max-width: 1100px) {
+    .login-page {
+      grid-template-columns: 1fr;
+    }
+
+    .login-showcase {
+      height: 420px;
+    }
+
+    .showcase-content {
+      padding: 40px;
+    }
+
+    .showcase-content h1 {
+      font-size: 48px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .login-card {
+      padding: 30px;
+    }
+
+    .showcase-content h1 {
+      font-size: 36px;
+    }
+  }
+</style>
+
+<script>
+  function togglePassword() {
+    const password = document.getElementById("password");
+
+    if (password.type === "password") {
+      password.type = "text";
+    } else {
+      password.type = "password";
+    }
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,215 @@
+/* BLOG PAGE */
+.blog-page {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* HERO */
+.blog-hero {
+  position: relative;
+  height: 45vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  border-radius: 20px;
+
+  background-image: url("../images/icecreambg2.jpg");
+  background-size: cover;
+  background-position: center;
+
+  overflow: hidden;
+}
+
+/* OVERLAY */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* CONTENT */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+/* TITLE */
+.blog-title {
+  font-size: clamp(40px, 6vw, 80px);
+
+  background: linear-gradient(45deg, #ffffff, #ffd6de);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* SUBTITLE */
+.blog-subtitle {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+/* CREATE BUTTON */
+.create-btn {
+  display: inline-block;
+
+  padding: 12px 25px;
+  border-radius: 30px;
+
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+
+  background: linear-gradient(45deg, #ff4d6d, #ff9a9e);
+
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  transform: scale(1.05);
+}
+
+/* FEED */
+.feed-container {
+  width: min(900px, 95%);
+
+  margin-top: 10px;
+
+  position: relative;
+  z-index: 3;
+}
+
+/* POST CARD */
+.post-card {
+  margin-bottom: 30px;
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* HEADER */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  color: white;
+}
+
+/* AVATAR */
+.avatar {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+  font-size: 20px;
+
+  background: linear-gradient(45deg, #ff4d6d, #ff9a9e);
+}
+
+/* CONTENT */
+.post-content {
+  margin: 20px 0;
+  color: white;
+  line-height: 1.6;
+}
+
+/* IMAGE */
+.post-image img {
+  width: 100%;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+/* ACTIONS */
+.post-actions {
+  margin-top: 15px;
+}
+
+/* ACTION BUTTON */
+.action-btn {
+  text-decoration: none;
+  color: white;
+
+  padding: 10px 18px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.2);
+  transition: 0.3s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* COMMENTS */
+.comments-box {
+  margin-top: 25px;
+  color: white;
+}
+
+/* COMMENT */
+.comment {
+  padding: 10px;
+  margin-top: 10px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* FORM */
+.comment-form {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* INPUT */
+.comment-form input,
+.comment-form textarea {
+  flex: 1;
+
+  padding: 10px;
+
+  border-radius: 10px;
+  border: none;
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* COMMENT BUTTON */
+.comment-btn {
+  border: none;
+  padding: 10px 18px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+  color: white;
+
+  background: linear-gradient(45deg, #ff4d6d, #ff9a9e);
+}
+
+/* EMPTY */
+.empty-posts {
+  text-align: center;
+  color: white;
+  padding: 50px;
+}

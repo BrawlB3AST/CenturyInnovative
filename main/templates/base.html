@@ -1,0 +1,686 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Century Innovative</title>
+
+    <!-- GOOGLE FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FONT AWESOME -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <style>
+      /* =========================
+   RESET
+========================= */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* =========================
+   BODY
+========================= */
+
+      body {
+        font-family: "Poppins", sans-serif;
+
+        min-height: 100vh;
+
+        overflow-x: hidden;
+
+        color: white;
+
+        position: relative;
+
+        background:
+          radial-gradient(circle at top left, #1e3c72, transparent 35%),
+          radial-gradient(circle at bottom right, #2a5298, transparent 35%),
+          linear-gradient(135deg, #050816, #0f172a, #111827);
+
+        background-size: 400% 400%;
+
+        animation: cosmicShift 15s ease infinite;
+      }
+
+      /* =========================
+   ANIMATED BACKGROUND
+========================= */
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+
+        background-size: 40px 40px;
+
+        z-index: -1;
+      }
+      /* DARK GLASS LAYER */
+
+      body::after {
+        content: "";
+
+        position: fixed;
+        inset: 0;
+
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(0, 170, 255, 0.15),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(0, 89, 255, 0.15),
+            transparent 30%
+          ),
+          rgba(0, 0, 0, 0.45);
+
+        z-index: -2;
+      }
+
+      /* =========================
+   ANIMATION
+========================= */
+
+      @keyframes cosmicShift {
+        0% {
+          background-position: 0% 50%;
+        }
+
+        50% {
+          background-position: 100% 50%;
+        }
+
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* =========================
+   FUTURISTIC NAVBAR
+========================= */
+
+      .navbar {
+        width: 95%;
+
+        margin: 18px auto;
+
+        padding: 18px 35px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border-radius: 25px;
+
+        position: sticky;
+        top: 10px;
+
+        z-index: 999;
+
+        background: rgba(12, 18, 35, 0.55);
+
+        backdrop-filter: blur(18px);
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        box-shadow:
+          0 8px 30px rgba(0, 0, 0, 0.4),
+          inset 0 0 12px rgba(0, 170, 255, 0.08);
+
+        overflow: hidden;
+      }
+
+      /* NAVBAR GLOW */
+
+      .navbar::before {
+        content: "";
+
+        position: absolute;
+
+        width: 200px;
+        height: 200px;
+
+        background: radial-gradient(
+          circle,
+          rgba(0, 170, 255, 0.25),
+          transparent 70%
+        );
+
+        top: -100px;
+        left: -60px;
+
+        animation: pulseGlow 5s infinite ease-in-out;
+      }
+
+      /* GLOW ANIMATION */
+
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          opacity: 0.4;
+        }
+
+        50% {
+          transform: scale(1.4);
+          opacity: 0.8;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 0.4;
+        }
+      }
+
+      /* =========================
+   LOGO
+========================= */
+
+      .logo {
+        text-decoration: none;
+
+        font-size: 30px;
+        font-weight: 700;
+
+        letter-spacing: 2px;
+
+        position: relative;
+
+        background: linear-gradient(45deg, #7ee8fa, #80ffea, #4facfe);
+
+        background-size: 300%;
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        animation: logoFlow 6s linear infinite;
+      }
+
+      /* LOGO ANIMATION */
+
+      @keyframes logoFlow {
+        0% {
+          background-position: 0%;
+        }
+
+        100% {
+          background-position: 300%;
+        }
+      }
+
+      /* =========================
+   NAV LINKS
+========================= */
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      /* LINK */
+
+      .nav-link {
+        position: relative;
+
+        text-decoration: none;
+
+        color: #dce8ff;
+
+        font-weight: 500;
+
+        padding: 12px 20px;
+
+        border-radius: 14px;
+
+        transition: 0.35s;
+      }
+
+      /* HOVER */
+
+      .nav-link:hover {
+        background: rgba(0, 170, 255, 0.12);
+
+        color: #7ee8fa;
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 0 15px rgba(0, 170, 255, 0.25);
+      }
+
+      /* ACTIVE */
+
+      .active-link {
+        background: linear-gradient(
+          45deg,
+          rgba(0, 170, 255, 0.25),
+          rgba(76, 110, 245, 0.3)
+        );
+
+        border: 1px solid rgba(126, 232, 250, 0.25);
+      }
+
+      /* =========================
+   USER BOX
+========================= */
+
+      .user-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      /* USERNAME */
+
+      .welcome {
+        color: #dce8ff;
+
+        font-size: 14px;
+
+        letter-spacing: 0.5px;
+      }
+
+      /* =========================
+   BUTTONS
+========================= */
+
+      .btn,
+      .logout-btn {
+        border: none;
+        outline: none;
+
+        cursor: pointer;
+
+        text-decoration: none;
+
+        padding: 11px 22px;
+
+        border-radius: 18px;
+
+        color: white;
+
+        font-weight: 600;
+
+        transition: 0.35s;
+
+        background: linear-gradient(45deg, #007cf0c9, #00dfd8c8);
+
+        box-shadow: 0 0 18px rgba(0, 170, 255, 0.3);
+      }
+
+      /* HOVER */
+
+      .btn:hover,
+      .logout-btn:hover {
+        transform: translateY(-3px) scale(1.03);
+
+        box-shadow: 0 0 25px rgba(0, 170, 255, 0.5);
+      }
+
+      /* =========================
+   MAIN CONTAINER
+========================= */
+
+      .main-container {
+        width: 95%;
+
+        margin: auto;
+
+        padding: 30px 0 90px;
+
+        position: relative;
+      }
+
+      /* =========================
+   ADVANCED SPACE EFFECT
+========================= */
+
+      .main-container::after {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        right: 0;
+        bottom: -40px;
+
+        height: 180px;
+
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(0, 170, 255, 0.08),
+          rgba(0, 0, 0, 0.2)
+        );
+
+        filter: blur(20px);
+
+        z-index: -1;
+      }
+
+      /* FLOATING PARTICLES */
+
+      .main-container::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.12) 1px,
+          transparent 1px
+        );
+
+        background-size: 40px 40px;
+
+        animation: starMove 40s linear infinite;
+
+        opacity: 0.2;
+
+        z-index: -2;
+      }
+
+      /* PARTICLE ANIMATION */
+
+      @keyframes starMove {
+        from {
+          transform: translateY(0);
+        }
+
+        to {
+          transform: translateY(-200px);
+        }
+      }
+
+      /* =========================
+   TOAST
+========================= */
+
+      .toast {
+        position: fixed;
+
+        bottom: 30px;
+        right: 30px;
+
+        padding: 15px 22px;
+
+        border-radius: 18px;
+
+        background: rgba(10, 20, 40, 0.7);
+
+        backdrop-filter: blur(12px);
+
+        border: 1px solid rgba(126, 232, 250, 0.25);
+
+        color: white;
+
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.25);
+
+        display: none;
+
+        z-index: 9999;
+      }
+
+      /* =========================
+   FOOTER
+========================= */
+
+      .footer {
+        width: 95%;
+
+        margin: 0 auto 20px;
+
+        padding: 35px;
+
+        border-radius: 28px;
+
+        text-align: center;
+
+        background: rgba(12, 18, 35, 0.55);
+
+        backdrop-filter: blur(16px);
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      }
+
+      /* FOOTER TEXT */
+
+      .footer p {
+        margin: 10px 0;
+
+        color: #dce8ff;
+      }
+
+      /* =========================
+   PAGE ANIMATION
+========================= */
+
+      .fade-page {
+        animation: fadePage 0.8s ease;
+      }
+
+      @keyframes fadePage {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* =========================
+   RESPONSIVE
+========================= */
+
+      @media (max-width: 900px) {
+        .navbar {
+          flex-direction: column;
+
+          gap: 20px;
+
+          padding: 20px;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+
+          justify-content: center;
+        }
+
+        .user-box {
+          flex-direction: column;
+        }
+
+        .logo {
+          font-size: 24px;
+        }
+      }
+    </style>
+
+    {% block extra_css %} {% endblock %}
+  </head>
+
+  <body class="fade-page">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <!-- LOGO -->
+      <a href="{% url 'home' %}" class="logo"> Century Innovative </a>
+
+      <!-- NAVIGATION -->
+      <div class="nav-links">
+        <a href="{% url 'home' %}" class="nav-link active-link">
+          <i class="fa-solid fa-house"></i>
+          Home
+        </a>
+
+        <a href="{% url 'blog_home' %}" class="nav-link">
+          <i class="fa-solid fa-blog"></i>
+          Blogs
+        </a>
+
+        {% if user.is_authenticated %}
+
+        <a href="{% url 'create_post' %}" class="nav-link">
+          <i class="fa-solid fa-pen"></i>
+          Create
+        </a>
+        <a href="{% url 'author_profile' user.username %}" class="nav-link">
+          <i class="fa-solid fa-user"></i>
+          Profile
+        </a>
+
+        {% endif %}
+      </div>
+
+      <!-- USER -->
+      <div class="user-box">
+        {% if user.is_authenticated %}
+
+        <span class="welcome"> 👋 Hi, {{ user.username }} </span>
+
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+
+          <button type="submit" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+          </button>
+        </form>
+
+        {% else %}
+
+        <a href="/login/" class="btn"> Login </a>
+
+        <a href="{% url 'signup' %}" class="btn"> Signup </a>
+
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main-container">{% block content %} {% endblock %}</main>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© 2026 Century Innovative</p>
+
+      <p>Forging digital galaxies</p>
+    </footer>
+
+    <!-- MAIN JS -->
+    <script>
+      const input = document.getElementById("live-search");
+      const box = document.getElementById("suggestions");
+
+      input.addEventListener("input", async () => {
+        const q = input.value.trim();
+        if (q.length < 2) {
+          box.classList.add("hidden");
+          return;
+        }
+
+        const res = await fetch(
+          `/search/suggestions/?q=${encodeURIComponent(q)}`,
+        );
+        const data = await res.json();
+        box.innerHTML = "";
+
+        if (data.results.length === 0) {
+          box.classList.add("hidden");
+          return;
+        }
+
+        data.results.forEach((r) => {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="/post/${r.id}/">${r.title} <small>by ${r.author__username}</small></a>`;
+          box.appendChild(li);
+        });
+
+        box.classList.remove("hidden");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-wrapper")) box.classList.add("hidden");
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          window.location.href = `/search/?q=${encodeURIComponent(input.value)}`;
+        }
+      });
+    </script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script>
+      function showToast(message) {
+        let toast = document.getElementById("toast");
+
+        toast.innerText = message;
+
+        toast.style.display = "block";
+
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 2500);
+      }
+    </script>
+
+    <script>
+      function shareWhatsApp(url, text) {
+        window.open(
+          "https://wa.me/?text=" + encodeURIComponent(text + " " + url),
+          "_blank",
+        );
+      }
+
+      function shareX(url, text) {
+        window.open(
+          "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(text) +
+            "&url=" +
+            encodeURIComponent(url),
+          "_blank",
+        );
+      }
+
+      function copyLink(url) {
+        navigator.clipboard.writeText(url).then(() => {
+          const toast = document.getElementById("copy-toast");
+          toast.style.display = "block";
+          setTimeout(() => (toast.style.display = "none"), 2500);
+        });
+      }
+    </script>
+    {% block extra_js %} {% endblock %}
+  </body>
+</html>
