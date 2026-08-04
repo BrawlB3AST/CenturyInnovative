@@ -1,0 +1,440 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="create-post-page">
+  <!-- LEFT PANEL -->
+  <div class="post-showcase">
+    <div class="showcase-overlay"></div>
+
+    <div class="showcase-content">
+      <span class="tag"> ✨ Creative Publishing Space </span>
+
+      <h1 class="banner-title">
+        Create Your
+        <span>Next Innovation</span>
+      </h1>
+
+      <p>
+        Share futuristic ideas, technology insights, startup concepts, coding
+        discoveries, and digital creativity with the Century Innovative
+        community.
+      </p>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="form-container">
+    <div class="post-card">
+      <div class="card-glow"></div>
+
+      <h2>Create Post</h2>
+
+      <p class="subtitle">Publish your thoughts into the digital universe</p>
+
+      <form method="POST" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+
+        <!-- FORM -->
+        <div class="form-fields">
+          {{ form.as_p }}
+
+          <input
+            type="file"
+            name="media_files"
+            multiple
+            accept="image/*,video/mp4"
+          />
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit" class="post-btn">
+          <i class="fa-solid fa-paper-plane"></i>
+          Publish Post
+        </button>
+      </form>
+
+      <!-- BACK -->
+      <a href="{% url 'blog_home' %}" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Blogs
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* PAGE */
+
+  .create-post-page {
+    min-height: 85vh;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+
+    gap: 35px;
+
+    align-items: center;
+  }
+
+  /* SHOWCASE */
+
+  .post-showcase {
+    position: relative;
+
+    height: auto;
+
+    border-radius: 35px;
+
+    overflow: hidden;
+
+    background-image: url("{% static 'images/bannerbg3.jpg' %}");
+
+    background-size: cover;
+    background-position: center;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* OVERLAY */
+
+  .showcase-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+      135deg,
+      rgba(0, 20, 50, 0.88),
+      rgba(0, 132, 255, 0.35)
+    );
+  }
+
+  /* CONTENT */
+
+  .showcase-content {
+    position: relative;
+    z-index: 2;
+
+    height: 100%;
+
+    padding: 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: white;
+  }
+
+  /* TAG */
+
+  .tag {
+    width: max-content;
+
+    padding: 10px 18px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    margin-bottom: 25px;
+  }
+
+  /* TITLE */
+
+  .banner-title {
+    font-size: 65px;
+
+    line-height: 1.1;
+
+    margin-bottom: 25px;
+
+    animation: glowText 4s infinite alternate;
+  }
+
+  /* GRADIENT */
+
+  .banner-title span {
+    background: linear-gradient(45deg, #7ee8fa, #00c6ff, #4facfe);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* PARAGRAPH */
+
+  .showcase-content p {
+    font-size: 17px;
+
+    line-height: 1.8;
+
+    color: #dce8ff;
+
+    margin-bottom: 35px;
+  }
+
+  /* FEATURES */
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* FEATURE */
+
+  .feature-item {
+    width: max-content;
+
+    padding: 14px 20px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* FORM CONTAINER */
+
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* CARD */
+
+  .post-card {
+    position: relative;
+
+    width: 100%;
+    max-width: 500px;
+
+    padding: 45px;
+
+    border-radius: 30px;
+
+    overflow: hidden;
+
+    background: rgba(10, 18, 35, 0.55);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  /* GLOW */
+
+  .card-glow {
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    top: -100px;
+    right: -100px;
+
+    background: radial-gradient(
+      circle,
+      rgba(0, 170, 255, 0.22),
+      transparent 70%
+    );
+  }
+
+  /* TITLE */
+
+  .post-card h2 {
+    font-size: 38px;
+
+    color: white;
+
+    margin-bottom: 10px;
+  }
+
+  /* SUBTITLE */
+
+  .subtitle {
+    color: #c8d9ff;
+
+    margin-bottom: 30px;
+  }
+
+  /* FORM */
+
+  .post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* DJANGO INPUTS */
+
+  .form-fields p {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+  }
+
+  /* LABELS */
+
+  .form-fields label {
+    margin-bottom: 8px;
+
+    color: #dce8ff;
+
+    font-size: 14px;
+  }
+
+  /* INPUTS */
+
+  .form-fields input,
+  .form-fields textarea {
+    width: 100%;
+
+    padding: 15px 18px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: 0.3s;
+  }
+
+  /* TEXTAREA */
+
+  .form-fields textarea {
+    min-height: 150px;
+
+    resize: none;
+  }
+
+  /* PLACEHOLDER */
+
+  .form-fields input::placeholder,
+  .form-fields textarea::placeholder {
+    color: #b8c9ec;
+  }
+
+  /* FOCUS */
+
+  .form-fields input:focus,
+  .form-fields textarea:focus {
+    border: 1px solid rgba(0, 200, 255, 0.5);
+
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
+  }
+
+  /* FILE INPUT */
+
+  input[type="file"] {
+    padding: 12px;
+  }
+
+  /* BUTTON */
+
+  .post-btn {
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+
+    transition: 0.35s;
+
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.25);
+  }
+
+  /* HOVER */
+
+  .post-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.45);
+  }
+
+  /* BACK */
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 25px;
+
+    text-decoration: none;
+
+    color: #7ee8fa;
+
+    font-weight: 600;
+  }
+
+  /* TITLE ANIMATION */
+
+  @keyframes glowText {
+    0% {
+      text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+    }
+
+    100% {
+      text-shadow:
+        0 0 25px rgba(0, 200, 255, 0.5),
+        0 0 40px rgba(0, 140, 255, 0.4);
+    }
+  }
+
+  /* RESPONSIVE */
+
+  @media (max-width: 1100px) {
+    .create-post-page {
+      grid-template-columns: 1fr;
+    }
+
+    .post-showcase {
+      height: 420px;
+    }
+
+    .showcase-content {
+      padding: 40px;
+    }
+
+    .banner-title {
+      font-size: 48px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .post-card {
+      padding: 30px;
+    }
+
+    .banner-title {
+      font-size: 36px;
+    }
+  }
+</style>
+
+{% endblock %}

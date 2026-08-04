@@ -1,0 +1,760 @@
+{% extends 'base.html' %} {% load static %} {% block extra_css %}
+<style>
+  /* ══ BLOG PAGE ══════════════════════════════════════════ */
+  .blog-page {
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HERO ── */
+  .blog-hero {
+    position: relative;
+    height: 52vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0f2e, #1a2a6c, #0d1b4b);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 0 20px;
+    width: 100%;
+  }
+  .blog-title {
+    font-size: clamp(38px, 6vw, 78px);
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff, #7ee8fa, #fff);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 5s linear infinite;
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+  .blog-subtitle {
+    font-size: 17px;
+    opacity: 0.8;
+    margin-bottom: 22px;
+  }
+  .create-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 24px;
+    background: linear-gradient(45deg, #58a9b8ee, #67dfcb, #4ba4f2e8);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.25);
+    transition: 0.3s;
+  }
+  .create-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.45);
+  }
+
+  /* ── HERO SEARCH ── */
+  .hero-search {
+    position: relative;
+    width: min(540px, 88%);
+    margin: 0 auto;
+  }
+  .hero-search i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(126, 232, 250, 0.6);
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 2;
+  }
+  #live-search {
+    width: 100%;
+    padding: 14px 46px 14px 46px;
+    border-radius: 40px;
+    border: 1px solid rgba(126, 232, 250, 0.25);
+    background: rgba(8, 15, 40, 0.55);
+    backdrop-filter: blur(16px);
+    color: white;
+    font-size: 0.92rem;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    transition: all 0.3s;
+  }
+  #live-search::placeholder {
+    color: rgba(200, 220, 255, 0.4);
+  }
+  #live-search:focus {
+    border-color: rgba(126, 232, 250, 0.55);
+    box-shadow:
+      0 0 0 3px rgba(0, 170, 255, 0.12),
+      0 4px 24px rgba(0, 0, 0, 0.35);
+  }
+  #search-clear {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(126, 232, 250, 0.5);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: none;
+    z-index: 2;
+  }
+  #suggestions {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background: rgba(6, 12, 32, 0.95);
+    backdrop-filter: blur(22px);
+    border: 1px solid rgba(126, 232, 250, 0.18);
+    border-radius: 16px;
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+    z-index: 9999;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+  }
+  #suggestions li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #dce8ff;
+    text-decoration: none;
+    font-size: 0.87rem;
+    transition: 0.2s;
+  }
+  #suggestions li a:hover {
+    background: rgba(0, 170, 255, 0.12);
+    color: #7ee8fa;
+  }
+  #suggestions li a small {
+    margin-left: auto;
+    color: rgba(126, 232, 250, 0.45);
+    font-size: 0.76rem;
+  }
+  #suggestions li + li {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .s-empty {
+    padding: 12px 14px;
+    color: rgba(200, 220, 255, 0.4);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  .hidden {
+    display: none !important;
+  }
+
+  /* ── QUERY BADGE ── */
+  .query-badge {
+    width: min(900px, 95%);
+    margin: 18px auto 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #7ee8fa;
+    font-size: 0.9rem;
+  }
+  .query-badge a {
+    color: #ff9a9e;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+
+  /* ── FEED ── */
+  .feed-container {
+    width: min(900px, 95%);
+    margin: 24px auto;
+  }
+
+  /* ── POST CARD ── */
+  .post-card {
+    margin-bottom: 28px;
+    padding: 24px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: 0.25s;
+  }
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
+  }
+  .post-card.hidden-card {
+    display: none;
+  }
+
+  /* ── POST HEADER ── */
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: white;
+  }
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 19px;
+    background: linear-gradient(45deg, #ff4d6d, #ff9a9e);
+  }
+  .post-meta {
+    line-height: 1.3;
+  }
+  .post-meta h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  .post-meta small {
+    opacity: 0.55;
+    font-size: 0.78rem;
+  }
+
+  /* ── BODY ── */
+  .post-body {
+    margin: 18px 0;
+    color: white;
+    line-height: 1.75;
+    font-size: 0.95rem;
+  }
+
+  /* ── MEDIA GRID ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .media-grid img,
+  .media-grid video {
+    width: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+    max-height: 380px;
+  }
+
+  /* ── ACTIONS ── */
+  .post-actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    align-items: center;
+  }
+  .action-btn {
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    padding: 9px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: 0.25s;
+    font-size: 0.85rem;
+  }
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
+  .action-btn.liked {
+    background: rgba(255, 77, 109, 0.35);
+  }
+
+  /* ── COMMENTS ── */
+  .comments-section {
+    margin-top: 22px;
+    color: white;
+  }
+  .comments-section h4 {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .comment-box {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.09);
+    border-left: 3px solid rgba(126, 232, 250, 0.3);
+  }
+  .comment-box strong {
+    font-size: 0.88rem;
+  }
+  .comment-box .c-date {
+    font-size: 0.74rem;
+    opacity: 0.5;
+    margin-left: 8px;
+  }
+  .comment-box p {
+    margin: 5px 0 8px;
+    line-height: 1.5;
+    font-size: 0.88rem;
+  }
+
+  /* reply toggle button */
+  .reply-toggle-btn {
+    background: none;
+    border: none;
+    color: #7ee8fa;
+    cursor: pointer;
+    font-size: 0.78rem;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+  /* reply input row */
+  .reply-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .reply-row input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 0.84rem;
+    outline: none;
+  }
+  .reply-row button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+    font-size: 0.82rem;
+  }
+
+  /* nested replies */
+  .reply-wrapper {
+    margin-left: 18px;
+    border-left: 2px solid rgba(126, 232, 250, 0.18);
+    padding-left: 12px;
+  }
+  .reply-box {
+    padding: 9px 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .reply-box strong {
+    font-size: 0.84rem;
+  }
+  .reply-box p {
+    margin: 4px 0;
+    font-size: 0.84rem;
+  }
+
+  /* top-level comment form */
+  .comment-form {
+    margin-top: 14px;
+    display: flex;
+    gap: 9px;
+  }
+  .comment-form textarea {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    resize: none;
+    font-size: 0.87rem;
+    outline: none;
+  }
+  .comment-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(45deg, #ff4d6d, #ff9a9e);
+    font-size: 0.87rem;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+
+  /* ── EMPTY ── */
+  .empty-posts {
+    text-align: center;
+    color: white;
+    padding: 60px;
+  }
+  .empty-posts h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  /* ── NO RESULTS (local filter) ── */
+  #no-local-results {
+    display: none;
+  }
+
+  /* copy toast */
+  #copy-toast {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(10, 20, 40, 0.9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    z-index: 9999;
+    border: 1px solid rgba(126, 232, 250, 0.3);
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 700px) {
+    .blog-hero {
+      height: 60vh;
+    }
+    #live-search {
+      font-size: 0.82rem;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<div class="blog-page">
+  <section class="blog-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="blog-title">Century Innovative Blogs</h1>
+      <p class="blog-subtitle">
+        Ideas &nbsp;·&nbsp; Innovation &nbsp;·&nbsp; Inspiration
+      </p>
+      <a href="{% url 'create_post' %}" class="create-btn">➕ Create Post</a>
+
+      <!-- SEARCH BAR -->
+      <div class="hero-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input
+          type="text"
+          id="live-search"
+          placeholder="Search posts or authors…"
+          value="{{ query|default:'' }}"
+          autocomplete="off"
+        />
+        <button id="search-clear" title="Clear">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <ul id="suggestions" class="hidden"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVE QUERY BADGE -->
+  {% if query %}
+  <div class="query-badge">
+    <span>Showing results for "<strong>{{ query }}</strong>"</span>
+    <a href="{% url 'blog_home' %}" title="Clear search">✕</a>
+  </div>
+  {% endif %}
+
+  <!-- ══ FEED ═════════════════════════════════════════════ -->
+  <section class="feed-container" id="feed">
+    {% for post in posts %}
+    <div
+      class="post-card"
+      data-content="{{ post.content|lower }}"
+      data-author="{{ post.author.username|lower }}"
+    >
+      <!-- HEADER -->
+      <div class="post-header">
+        <div class="avatar">{{ post.author.username|slice:":1"|upper }}</div>
+        <div class="post-meta">
+          <h3>
+            <a
+              href="{% url 'author_profile' post.author.username %}"
+              style="color: white; text-decoration: none"
+            >
+              {{ post.author.username }}
+            </a>
+          </h3>
+          <small>{{ post.created_at|date:"d M Y · H:i" }}</small>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="post-body"><p>{{ post.content }}</p></div>
+
+      <!-- MEDIA -->
+      {% if post.media_files.all %}
+      <div class="media-grid">
+        {% for media in post.media_files.all %} {% if media.is_video %}
+        <video controls>
+          <source src="{{ media.file.url }}" type="video/mp4" />
+        </video>
+        {% endif %} {% if media.is_image %}
+        <img src="{{ media.file.url }}" alt="post media" />
+        {% endif %} {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- ACTIONS -->
+      <div class="post-actions">
+        <a href="{% url 'like_post' post.id %}" class="action-btn">
+          ❤️ {{ post.likes.count }} Like{{ post.likes.count|pluralize }}
+        </a>
+        <button
+          class="action-btn"
+          onclick="shareWA('{{ request.build_absolute_uri }}','{{ post.content|slice:':80'|escapejs }}')"
+        >
+          🟢 WhatsApp
+        </button>
+        <button
+          class="action-btn"
+          onclick="shareX('{{ request.build_absolute_uri }}','{{ post.content|slice:':80'|escapejs }}')"
+        >
+          𝕏 Twitter
+        </button>
+        <button
+          class="action-btn"
+          onclick="copyLink('{{ request.build_absolute_uri }}')"
+        >
+          🔗 Copy Link
+        </button>
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="comments-section">
+        <h4>💬 Comments ({{ post.comments.count }})</h4>
+
+        {% for comment in post.comments.all %} {% if not comment.parent %}
+        <div class="comment-box">
+          <strong>{{ comment.user.username }}</strong>
+          <span class="c-date">{{ comment.created_at|date:"d M · H:i" }}</span>
+          <p>{{ comment.text }}</p>
+
+          {% if request.user.is_authenticated %}
+          <button
+            class="reply-toggle-btn"
+            onclick="toggleReply('rf-{{ comment.id }}')"
+          >
+            ↩ Reply
+          </button>
+          <div id="rf-{{ comment.id }}" class="hidden">
+            <form method="POST" action="{% url 'comment_post' post.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="parent_id" value="{{ comment.id }}" />
+              <div class="reply-row">
+                <input
+                  type="text"
+                  name="text"
+                  placeholder="Reply to {{ comment.user.username }}…"
+                  required
+                />
+                <button type="submit">Send</button>
+              </div>
+            </form>
+          </div>
+          {% endif %} {% if comment.replies.all %}
+          <div class="reply-wrapper">
+            {% for reply in comment.replies.all %}
+            <div class="reply-box">
+              <strong>{{ reply.user.username }}</strong>
+              <span class="c-date">{{ reply.created_at|date:"d M" }}</span>
+              <p>{{ reply.text }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %} {% endfor %} {% if request.user.is_authenticated %}
+        <form
+          method="POST"
+          action="{% url 'comment_post' post.id %}"
+          class="comment-form"
+        >
+          {% csrf_token %}
+          <textarea
+            name="text"
+            rows="2"
+            placeholder="Write a comment…"
+            required
+          ></textarea>
+          <button type="submit" class="comment-btn">Post</button>
+        </form>
+        {% else %}
+        <p style="opacity: 0.55; font-size: 0.83rem; margin-top: 10px">
+          <a href="{% url 'login' %}" style="color: #7ee8fa">Login</a> to
+          comment.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty-posts">
+      <h2>No posts yet 🚀</h2>
+      <p>Be the first to share your innovation!</p>
+    </div>
+    {% endfor %}
+    <div id="no-local-results" class="empty-posts">
+      <h2>🔍 No matches found</h2>
+      <p>Try a different keyword.</p>
+    </div>
+  </section>
+</div>
+
+<div id="copy-toast">✅ Link copied!</div>
+
+{% endblock %} {% block extra_js %}
+<script>
+  /* ── Share helpers ── */
+  function shareWA(url, text) {
+    window.open(
+      "https://wa.me/?text=" + encodeURIComponent(text + " " + url),
+      "_blank",
+    );
+  }
+  function shareX(url, text) {
+    window.open(
+      "https://twitter.com/intent/tweet?text=" +
+        encodeURIComponent(text) +
+        "&url=" +
+        encodeURIComponent(url),
+      "_blank",
+    );
+  }
+  function copyLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+      const t = document.getElementById("copy-toast");
+      t.style.display = "block";
+      setTimeout(() => (t.style.display = "none"), 2500);
+    });
+  }
+
+  /* ── Reply toggle ── */
+  function toggleReply(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle("hidden");
+  }
+
+  /* ── Search ── */
+  const input = document.getElementById("live-search");
+  const clearBtn = document.getElementById("search-clear");
+  const suggBox = document.getElementById("suggestions");
+  const allCards = document.querySelectorAll(".post-card");
+  const noResults = document.getElementById("no-local-results");
+  let debTimer;
+
+  // pre-fill clear btn if query was server-side
+  if (input.value) clearBtn.style.display = "block";
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim();
+    clearBtn.style.display = q ? "block" : "none";
+    filterCards(q);
+    clearTimeout(debTimer);
+    if (q.length < 2) {
+      hideSugg();
+      return;
+    }
+    debTimer = setTimeout(() => fetchSugg(q), 260);
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.style.display = "none";
+    filterCards("");
+    hideSugg();
+    input.focus();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".hero-search")) hideSugg();
+  });
+
+  /* local instant filter */
+  function filterCards(q) {
+    const term = q.toLowerCase();
+    let vis = 0;
+    allCards.forEach((card) => {
+      const match =
+        !term ||
+        card.dataset.content.includes(term) ||
+        card.dataset.author.includes(term);
+      card.classList.toggle("hidden-card", !match);
+      if (match) vis++;
+    });
+    noResults.style.display = term && vis === 0 ? "block" : "none";
+  }
+
+  /* AJAX suggestions */
+  async function fetchSugg(q) {
+    try {
+      const res = await fetch(
+        "/blog/search/suggestions/?q=" + encodeURIComponent(q),
+      );
+      const data = await res.json();
+      if (!data.results.length) {
+        hideSugg();
+        return;
+      }
+      suggBox.innerHTML = data.results
+        .map(
+          (r) => `
+      <li><a href="/blog/?q=${encodeURIComponent(r.title)}">
+        <i class="fa-solid fa-magnifying-glass" style="color:rgba(126,232,250,.4);font-size:.75rem"></i>
+        ${hl(r.title, q)}
+        <small>by ${hl(r.author__username, q)}</small>
+      </a></li>`,
+        )
+        .join("");
+      suggBox.classList.remove("hidden");
+    } catch (_) {
+      hideSugg();
+    }
+  }
+
+  function hl(text, q) {
+    const re = new RegExp(
+      "(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")",
+      "gi",
+    );
+    return text.replace(
+      re,
+      '<mark style="background:rgba(0,200,255,.25);color:#7ee8fa;border-radius:3px;padding:0 2px">$1</mark>',
+    );
+  }
+  function hideSugg() {
+    suggBox.innerHTML = "";
+    suggBox.classList.add("hidden");
+  }
+</script>
+{% endblock %}

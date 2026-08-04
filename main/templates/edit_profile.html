@@ -1,0 +1,378 @@
+{% extends 'base.html' %} {% load static %} {% block extra_css %}
+<style>
+  /* ══ EDIT PROFILE PAGE ══════════════════════════════════ */
+  .edit-profile-page {
+    min-height: 85vh;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 35px;
+    align-items: center;
+  }
+
+  /* ── LEFT PANEL ── */
+  .ep-showcase {
+    position: relative;
+    border-radius: 32px;
+    overflow: hidden;
+    min-height: 520px;
+    background: linear-gradient(135deg, #0a0e27, #1c2a6c, #0d1b4b);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+  }
+  .ep-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 20, 55, 0.82),
+      rgba(0, 110, 255, 0.28)
+    );
+  }
+  .ep-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 50px;
+    color: white;
+  }
+  .ep-tag {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 30px;
+    margin-bottom: 22px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+  }
+  .ep-content h1 {
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .ep-content h1 span {
+    background: linear-gradient(45deg, #7ee8fa, #00c6ff, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .ep-content p {
+    color: #dce8ff;
+    line-height: 1.8;
+    font-size: 0.92rem;
+  }
+  .ep-tips {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ep-tip {
+    padding: 13px 18px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.84rem;
+    color: #dce8ff;
+  }
+
+  /* ── RIGHT FORM ── */
+  .ep-form-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ep-card {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    padding: 44px;
+    border-radius: 30px;
+    overflow: hidden;
+    background: rgba(10, 18, 35, 0.58);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  }
+  .ep-card::before {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    top: -110px;
+    right: -100px;
+    background: radial-gradient(
+      circle,
+      rgba(0, 170, 255, 0.22),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+  .ep-card h2 {
+    font-size: 32px;
+    color: white;
+    margin-bottom: 6px;
+  }
+  .ep-card .sub {
+    color: #c8d9ff;
+    margin-bottom: 28px;
+    font-size: 0.88rem;
+  }
+
+  /* form fields */
+  .field-group {
+    margin-bottom: 20px;
+  }
+  .field-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #dce8ff;
+    font-size: 0.84rem;
+    font-weight: 500;
+  }
+  .field-group input[type="text"],
+  .field-group input[type="url"],
+  .field-group textarea,
+  .field-group select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    outline: none;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 0.9rem;
+    font-family: "Poppins", sans-serif;
+    transition: 0.3s;
+  }
+  .field-group textarea {
+    resize: none;
+  }
+  .field-group input:focus,
+  .field-group textarea:focus {
+    border-color: rgba(0, 200, 255, 0.45);
+    box-shadow: 0 0 14px rgba(0, 170, 255, 0.18);
+  }
+  .field-group input::placeholder,
+  .field-group textarea::placeholder {
+    color: #9ab0d8;
+  }
+
+  /* colour picker row */
+  .colour-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .colour-row input[type="color"] {
+    width: 52px;
+    height: 52px;
+    padding: 3px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(126, 232, 250, 0.25);
+    background: transparent;
+  }
+  .colour-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    transition: background 0.2s;
+  }
+
+  /* error text */
+  .field-error {
+    color: #ff9a9e;
+    font-size: 0.78rem;
+    margin-top: 4px;
+  }
+
+  /* save button */
+  .save-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, #007cf0, #00dfd8);
+    box-shadow: 0 0 18px rgba(0, 170, 255, 0.25);
+    transition: 0.35s;
+    margin-top: 8px;
+  }
+  .save-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 28px rgba(0, 170, 255, 0.45);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #7ee8fa;
+    font-size: 0.87rem;
+  }
+
+  @media (max-width: 1000px) {
+    .edit-profile-page {
+      grid-template-columns: 1fr;
+    }
+    .ep-showcase {
+      min-height: 280px;
+    }
+    .ep-content {
+      padding: 35px 30px;
+    }
+    .ep-content h1 {
+      font-size: 32px;
+    }
+  }
+  @media (max-width: 600px) {
+    .ep-card {
+      padding: 28px;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="edit-profile-page">
+  <!-- LEFT SHOWCASE -->
+  <div class="ep-showcase">
+    <div class="ep-overlay"></div>
+    <div class="ep-content">
+      <span class="ep-tag">✏ Profile Settings</span>
+      <h1>Shape Your <span>Digital Identity</span></h1>
+      <p>
+        Let the community know who you are. Add a bio, link your website, and
+        personalise your avatar colour.
+      </p>
+      <div class="ep-tips">
+        <div class="ep-tip">🎨 Pick an avatar colour that represents you</div>
+        <div class="ep-tip">🌐 Link your personal site or portfolio</div>
+        <div class="ep-tip">𝕏 Add your Twitter / X handle</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="ep-form-wrap">
+    <div class="ep-card">
+      <h2>Edit Profile</h2>
+      <p class="sub">Your changes save immediately</p>
+
+      <!-- Django messages -->
+      {% for msg in messages %}
+      <div
+        style="
+          background: rgba(0, 220, 150, 0.15);
+          border: 1px solid rgba(0, 220, 150, 0.3);
+          color: #80ffcc;
+          padding: 10px 14px;
+          border-radius: 12px;
+          margin-bottom: 18px;
+          font-size: 0.85rem;
+        "
+      >
+        {{ msg }}
+      </div>
+      {% endfor %}
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <!-- BIO -->
+        <div class="field-group">
+          <label for="{{ form.bio.id_for_label }}">
+            <i class="fa-solid fa-align-left"></i> Bio
+          </label>
+          <textarea
+            name="{{ form.bio.html_name }}"
+            id="{{ form.bio.id_for_label }}"
+            rows="3"
+            placeholder="Tell the community about yourself…"
+          >
+{{ form.bio.value|default:'' }}</textarea
+          >
+          {% if form.bio.errors %}
+          <p class="field-error">{{ form.bio.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        <!-- WEBSITE -->
+        <div class="field-group">
+          <label for="{{ form.website.id_for_label }}">
+            <i class="fa-solid fa-globe"></i> Website
+          </label>
+          <input
+            type="url"
+            name="{{ form.website.html_name }}"
+            id="{{ form.website.id_for_label }}"
+            value="{{ form.website.value|default:'' }}"
+            placeholder="https://yoursite.com"
+          />
+          {% if form.website.errors %}
+          <p class="field-error">{{ form.website.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        <!-- TWITTER -->
+        <div class="field-group">
+          <label for="{{ form.twitter.id_for_label }}">
+            <i class="fa-brands fa-x-twitter"></i> X / Twitter handle
+          </label>
+          <input
+            type="text"
+            name="{{ form.twitter.html_name }}"
+            id="{{ form.twitter.id_for_label }}"
+            value="{{ form.twitter.value|default:'' }}"
+            placeholder="@yourhandle"
+          />
+          {% if form.twitter.errors %}
+          <p class="field-error">{{ form.twitter.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        <!-- AVATAR COLOUR -->
+        <div class="field-group">
+          <label> <i class="fa-solid fa-palette"></i> Avatar colour </label>
+          <div class="colour-row">
+            <input
+              type="color"
+              name="{{ form.avatar_initial_color.html_name }}"
+              id="colour-pick"
+              value="{{ form.avatar_initial_color.value|default:'#ff4d6d' }}"
+              oninput="
+                document.getElementById('colour-preview').style.background =
+                  this.value
+              "
+            />
+            <div
+              id="colour-preview"
+              class="colour-preview"
+              style="background:{{ form.avatar_initial_color.value|default:'#ff4d6d' }}"
+            ></div>
+            <span style="font-size: 0.82rem; opacity: 0.65"
+              >Click to change</span
+            >
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+      </form>
+
+      <a
+        href="{% url 'author_profile' request.user.username %}"
+        class="back-link"
+      >
+        <i class="fa-solid fa-arrow-left"></i> Back to Profile
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
